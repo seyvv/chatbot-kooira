@@ -7,12 +7,43 @@ let userMessage;
 const inputInitHeight = chatInput.scrollHeight;
 
 // Funkce pro převod URL na klikací odkazy s textem "Kooira"
-function convertLinksToClickableText(text) {
+const convertLinksToClickableText = (text) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     return text.replace(urlRegex, (url) => {
         return `<a href="${url}" target="_blank" rel="noopener noreferrer">Kooira</a>`; // target="_blank" otevře stránku v nové záložce, a rel jsou bezpečnostní opatření
     });
 }
+
+// Funkce pro obnovení chatboxu ze sessionStorage po načtení
+const restoreChatFromStorage = () => {
+    const savedContent = sessionStorage.getItem('chatbox_content');
+    if (savedContent) {
+        chatBox.innerHTML = savedContent;
+        chatBox.scrollTo(0, chatBox.scrollHeight);
+    }
+}
+
+// Funkce pro uložení chatu do sessionStorage
+const saveChatToStorage = () => {
+    sessionStorage.setItem('chatbox_content', chatBox.innerHTML);
+}
+
+// Funkce pro uchování stavu chatbota (otevřený/zavřený)
+const saveChatState = (isOpen) => {
+    sessionStorage.setItem('chatbot_open', isOpen ? '1' : '0');
+}
+
+// Funkce pro načtení stavu chatbota
+const restoreChatState = () => {
+    const open = sessionStorage.getItem('chatbot_open');
+    if (open === '1') {
+        document.body.classList.add('show-chatbot');
+    }
+}
+
+// Spuštění obnovy při načtení stránky
+restoreChatState();
+restoreChatFromStorage();
 
 // Vytváří <li> element chatu s vloženou zprávou a názvem třídy
 const createChatMessage = (message, className) => {
@@ -28,6 +59,7 @@ const createChatMessage = (message, className) => {
 
     chatMessage.innerHTML = chatContent; // přidání struktury zprávy
     chatMessage.querySelector('p').textContent = message; // zpráva jako text, nesmí zpracovávat např. html tagy
+    saveChatToStorage(); // ukládání každé zprávy do sessionStorage
     return chatMessage;
 }
 
@@ -47,6 +79,7 @@ const generateResponse = async (thinkingMessage) => {
 
         // Nahradíme text ve zprávě "Přemýšlím..." odpovědí od AI
         responseMessage.innerHTML = convertLinksToClickableText(data.response); // Odpověď bota s použitím funkce na převedení odkazu
+        saveChatToStorage(); // ukládání každé zprávy do sessionStorage po přepsání "Přemýšlím..." zprávy
     } catch (error) {
         responseMessage.classList.add('error');
         responseMessage.textContent = 'Nastala chyba při komunikaci s chatbotem. Zkuste to prosím znovu';
@@ -89,4 +122,10 @@ chatInput.addEventListener('keydown', (e) => {
 });
 
 sendChatBtn.addEventListener('click', handleChat);
-chatbotToggler.addEventListener('click', () => document.body.classList.toggle('show-chatbot')); // anonymní funkce která bud přidává nebo odebírá třídu show-chatbot a tím otevří/zavírá chatbox okno
+
+// Toggle button s uložením stavu
+chatbotToggler.addEventListener('click', () => {
+    const isOpen = document.body.classList.toggle('show-chatbot');
+    saveChatState(isOpen);
+}); 
+// anonymní funkce která bud přidává nebo odebírá třídu show-chatbot a tím otevří/zavírá chatbox okno
