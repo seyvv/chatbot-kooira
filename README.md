@@ -5,10 +5,9 @@ Tento projekt je chatbot, který pomáhá zákazníkům webu [Kooira.cz](https:/
 ---
 
 ## ✅ Funkce
-- 🔍 Vyhledává informace ze stránky kooira.cz pomocí embeddingů (RAG)
-- 🤖 Využívá fine-tuned GPT-3.5 pro přátelské odpovědi
-- 💬 Pamatuje si kontext konverzace pomocí session (dokud je otevřená stránka)
-- 🔒 Nevymýšlí si odkazy – používá jen reálné z RAG databáze
+- Vyhledává informace ze stránky kooira.cz pomocí embeddingů (RAG)
+- Využívá fine-tuned GPT-3.5 pro přátelské odpovědi
+- Pamatuje si kontext konverzace pomocí session (dokud je otevřená stránka)
 
 ---
 
@@ -63,36 +62,22 @@ Otevři `http://localhost:10000` ve svém prohlížeči.
 
 ---
 
-## 🌐 Nasazení na Render.com
-
-1. Nahraj celý projekt na GitHub (včetně složky `chroma_db/`)
-2. V Render.com:
-   - přidej environment variable `OPENAI_API_KEY`
-   - přidej environment variable `SECRET_KEY`
-   - nastav build command: `pip install -r requirements.txt`
-   - nastav start command: `python main.py`
-3. Po nasazení se session bude chovat stejně jako lokálně – uchová se jen během otevřeného okna.
-
----
-
-## 🧪 Ověření funkce session
-- Otevři stránku, pošli několik zpráv
-- Zavři celé okno prohlížeče
-- Otevři znovu a ověř, že konverzace začíná od znova
-
----
-
 ## 📁 Struktura projektu
 ```
-├── main.py              # Flask backend
-├── scrape_and_index.py # Web scraper + Chroma indexace
+Chatbot/
 ├── chroma_db/           # Vektorová databáze (vygenerovaná)
-├── templates/
-│   └── index.html       # Chat frontend
+├── flask_session/       # Úložiště pro session (vygenerované Flaskem)
 ├── static/
-│   ├── script.js
-│   └── style.css
-├── .env                 # API klíče (nenahrávej veřejně!)
-├── requirements.txt
-└── README.md
+│   ├── script.js         # Klientský JavaScript pro chatové UI
+│   └── style.css         # Základní styly vzhledu
+├── templates/
+│   └── index.html        # HTML šablona pro rozhraní
+├── .env                  # Proměnné prostředí (API klíče)
+├── .gitignore
+├── faq_dataset.jsonl     # Dataset pro fine-tuning
+├── main.ipynb            # Experimentální Jupyter notebook (použit pro fine-tuning)
+├── main.py               # Flask backend aplikace
+├── rag_indexer.py        # Skript pro scrapování a indexaci webu Kooira.cz
+├── README.md
+└── requirements.txt
 ```
