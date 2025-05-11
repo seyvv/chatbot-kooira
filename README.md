@@ -1,6 +1,6 @@
 # 🐾 Kooira Chatbot 
 
-Tento projekt je chatbot, který pomáhá zákazníkům webu [Kooira.cz](https://kooira.cz) s výběrem produktů pro psy. Využívá OpenAI API (fine-tuned model GPT-3.5-turbo), RAG (retrieval-augmented generation) přes ChromaDB a ukládá historii konverzace pomocí Flask session.
+Chatbot pomáhá zákazníkům webu [Kooira.cz](https://kooira.cz) s výběrem produktů pro psy. Využívá OpenAI API (fine-tuned model GPT-3.5-turbo), RAG (retrieval-augmented generation) přes ChromaDB a ukládá historii konverzace pomocí Flask session.
 
 ---
 
