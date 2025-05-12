@@ -2,3 +2,5 @@
 __pycache__/
 *.pyc
 main.ipynb
+__flask_session__/
+session/
