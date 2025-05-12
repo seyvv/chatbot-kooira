@@ -48,8 +48,7 @@ import secrets
 print(secrets.token_hex(32))
 ```
 
-2. **Vytvoř vektorovou databázi před spuštěním:**
-Spusť `scrape_and_index.py` (nebo jiný skript, který načítá obsah z webu).
+2. Adresář chromadb/ obsahuje předem vytvořenou databázi dokumentů nutnou pro běh RAG části. Pokud složka chybí, je nutné spustit skript rag_indexer.py, který databázi znovu vytvoří.
 
 ---
 
@@ -59,8 +58,6 @@ Spusť `scrape_and_index.py` (nebo jiný skript, který načítá obsah z webu).
 python main.py
 ```
 Otevři `http://localhost:10000` ve svém prohlížeči.
-
-Adresář chromadb/ obsahuje předem vytvořenou databázi dokumentů nutnou pro běh RAG části. Pokud složka chybí, je nutné spustit skript rag_indexer.py, který databázi znovu vytvoří.
 
 ---
 
