@@ -60,6 +60,8 @@ python main.py
 ```
 Otevři `http://localhost:10000` ve svém prohlížeči.
 
+Adresář chromadb/ obsahuje předem vytvořenou databázi dokumentů nutnou pro běh RAG části. Pokud složka chybí, je nutné spustit skript rag_indexer.py, který databázi znovu vytvoří.
+
 ---
 
 ## 📁 Struktura projektu
