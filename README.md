@@ -48,7 +48,7 @@ import secrets
 print(secrets.token_hex(32))
 ```
 
-2. Adresář chromadb/ obsahuje předem vytvořenou databázi dokumentů nutnou pro běh RAG části. Pokud složka chybí, je nutné spustit skript rag_indexer.py, který databázi znovu vytvoří.
+2. Adresář `chromadb/` obsahuje předem vytvořenou databázi dokumentů nutnou pro běh RAG části. Pokud složka chybí, je nutné spustit skript `rag_indexer.py`, který databázi znovu vytvoří.
 
 ---
 
