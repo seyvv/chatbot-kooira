@@ -45,21 +45,18 @@ const restoreChatState = () => {
 restoreChatState();
 restoreChatFromStorage();
 
-// Vytváří <li> element chatu s vloženou zprávou a názvem třídy
 const createChatMessage = (message, className) => {
     const chatMessage = document.createElement('li');
-    // připojí zprávu uživatele k chatboxu
     chatBox.appendChild(chatMessage);
     chatMessage.classList.add(className);
 
-    // pokud je className outgoing, pak jen zpráva, jinak span (emotikona) a zpráva
     let chatContent = className === 'outgoing'
         ? `<p></p>`
         : `<span class="material-symbols-outlined">pets</span><p></p>`;
 
-    chatMessage.innerHTML = chatContent; // přidání struktury zprávy
-    chatMessage.querySelector('p').textContent = message; // zpráva jako text, nesmí zpracovávat např. html tagy
-    saveChatToStorage(); // ukládání každé zprávy do sessionStorage
+    chatMessage.innerHTML = chatContent; 
+    chatMessage.querySelector('p').textContent = message; 
+    saveChatToStorage(); 
     return chatMessage;
 }
 
@@ -69,7 +66,7 @@ const generateResponse = async (thinkingMessage) => {
     const responseMessage = thinkingMessage.querySelector('p');
 
     try {
-        const response = await fetch('/chat', { // Odeslání POST požadavku na Flask
+        const response = await fetch('/chat', { 
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ message: userMessage })
@@ -77,14 +74,13 @@ const generateResponse = async (thinkingMessage) => {
 
         const data = await response.json();
 
-        // Nahradíme text ve zprávě "Přemýšlím..." odpovědí od AI
-        responseMessage.innerHTML = convertLinksToClickableText(data.response); // Odpověď bota s použitím funkce na převedení odkazu
-        saveChatToStorage(); // ukládání každé zprávy do sessionStorage po přepsání "Přemýšlím..." zprávy
+        responseMessage.innerHTML = convertLinksToClickableText(data.response); 
+        saveChatToStorage(); 
     } catch (error) {
         responseMessage.classList.add('error');
         responseMessage.textContent = 'Nastala chyba při komunikaci s chatbotem. Zkuste to prosím znovu';
     } finally {
-        chatBox.scrollTo(0, chatBox.scrollHeight); // automatické scrollování dolů na poslední zprávu
+        chatBox.scrollTo(0, chatBox.scrollHeight); 
     }
 };
 
@@ -93,29 +89,28 @@ const handleChat = () => {
     userMessage = chatInput.value.trim();
     if (!userMessage) return;
 
-    chatInput.value = ""; // vyprázdnění textarey
-    chatInput.style.height = `${inputInitHeight}px`; // nastavení původní výšky textarey
+    chatInput.value = ""; 
+    chatInput.style.height = `${inputInitHeight}px`; 
 
     createChatMessage(userMessage, 'outgoing');
-    chatBox.scrollTo(0, chatBox.scrollHeight); // automatické scrollování dolů na poslední zprávu
+    chatBox.scrollTo(0, chatBox.scrollHeight); 
 
     setTimeout(() => {
-        // Ukáže zprávu "Přemýšlím..." zatímco se čeká na odpověď AI
         const thinkingMessage = createChatMessage('Přemýšlím...', 'incoming');
-        chatBox.scrollTo(0, chatBox.scrollHeight); // automatické scrollování dolů na poslední zprávu
+        chatBox.scrollTo(0, chatBox.scrollHeight);
         generateResponse(thinkingMessage);
     }, 600);
 };
 
 // Přizpůsobení velikosti textarey v závislosti na velikosti obsahu
 chatInput.addEventListener('input', () => {
-    chatInput.style.height = `${inputInitHeight}px`; // nastavení původní výšky textarey
-    chatInput.style.height = `${chatInput.scrollHeight}px`; // nastavení nové výšky podle obsahu
+    chatInput.style.height = `${inputInitHeight}px`; 
+    chatInput.style.height = `${chatInput.scrollHeight}px`; 
 });
 
 // Při stisknutí klávesy Enter bez Shiftu se pošle zpráva
 chatInput.addEventListener('keydown', (e) => {
-    if(e.key === 'Enter' && !e.shiftKey) { // e.key vrací název klávesy, kterou uživatel stiskl, jako String
+    if(e.key === 'Enter' && !e.shiftKey) { 
         e.preventDefault();
         handleChat();
     }

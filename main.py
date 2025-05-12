@@ -6,8 +6,7 @@ import os
 import chromadb
 from chromadb.utils import embedding_functions
 
-# načítání proměnné z .env souboru
-# Lokálně aktivní, na Renderu se ignoruje
+# načítání proměnné z .env souboru (pouze lokální)
 load_dotenv()
 
 api_key = os.getenv("OPENAI_API_KEY")
@@ -29,7 +28,7 @@ Session(app)
 def index():
     return render_template('index.html')
 
-@app.route('/chat', methods=['POST']) # posíláme data - user_input, proto POST
+@app.route('/chat', methods=['POST']) 
 def chat():
     user_input = request.json.get("message")
 
@@ -37,7 +36,7 @@ def chat():
         session["history"] = []
         # Dotaz na OpenAI API s fine-tunovaným modelem
     try:
-        # Vyhledej nejrelevantnější obsah z webu
+        # implementace RAG
         embedded_query = openai_ef(user_input)[0].tolist()
         results = collection.query(query_embeddings=[embedded_query], n_results=1)
 
@@ -69,7 +68,7 @@ def chat():
         session["history"].append({"role": "assistant", "content": ai_response})
 
     except Exception as e:
-        print(f"Chyba při získávání odpovědi: {e}")  # Logování chyby do konzole
+        print(f"Chyba při získávání odpovědi: {e}")  
         ai_response = "Omlouvám se, nastala chyba při získávání odpovědi."
 
     return jsonify({"response": ai_response})
